@@ -16,12 +16,12 @@ return
 
 let derivative=math.derivative(fx,'x').toString()
 
-document.getElementById("derivativeDisplay").innerHTML=
+document.getElementById("derivativeDisplay").innerHTML =
 "Derivative: f'(x) = "+derivative
 
 let table=document.getElementById("table")
 
-table.innerHTML=`
+table.innerHTML = `
 <tr>
 <th>Iteration</th>
 <th>xₙ</th>
@@ -55,18 +55,20 @@ row.insertCell(2).innerText=f.toFixed(6)
 row.insertCell(3).innerText=x1.toFixed(6)
 row.insertCell(4).innerText=error.toFixed(6)
 
-iterationData.push({iteration:i,x:x})
+iterationData.push({
+iteration:i,
+x:x1
+})
 
-document.getElementById("progressBar").style.width=
+document.getElementById("progressBar").style.width =
 (i/maxIter*100)+"%"
 
 if(error<tol){
 
-document.getElementById("result").innerHTML=
+document.getElementById("result").innerHTML =
 "Root ≈ "+x1.toFixed(6)
 
 drawGraph(fx)
-
 drawConvergence()
 
 return
@@ -76,7 +78,6 @@ x=x1
 }
 
 drawGraph(fx)
-
 drawConvergence()
 
 }
@@ -108,15 +109,11 @@ type:'line',
 
 data:{
 labels:xs,
-
-datasets:[
-{
+datasets:[{
 label:'f(x)',
 data:ys,
 borderWidth:2
-}
-]
-
+}]
 }
 
 })
@@ -125,28 +122,24 @@ borderWidth:2
 
 function drawConvergence(){
 
-let iterations=iterationData.map(d=>d.iteration)
-let values=iterationData.map(d=>d.x)
+let iterations = iterationData.map(d => d.iteration)
+let values = iterationData.map(d => d.x)
 
-let ctx=document.getElementById("convergenceGraph")
+let ctx = document.getElementById("convergenceGraph")
 
 if(convergenceChart) convergenceChart.destroy()
 
-convergenceChart=new Chart(ctx,{
+convergenceChart = new Chart(ctx,{
 
 type:'line',
 
 data:{
 labels:iterations,
-
-datasets:[
-{
+datasets:[{
 label:"Root Convergence",
 data:values,
 borderWidth:2
-}
-]
-
+}]
 }
 
 })
