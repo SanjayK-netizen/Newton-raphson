@@ -1,70 +1,63 @@
-function calculate() {
-    let fxInput = document.getElementById("fx").value;
-    let x0 = parseFloat(document.getElementById("x0").value);
-    let maxIter = parseInt(document.getElementById("iter").value);
-    let tol = parseFloat(document.getElementById("tol").value);
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Newton-Raphson Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 
-    // Parse function using math.js
-    let f = math.parse(fxInput).compile();
+<body>
 
-    // Compute derivative automatically
-    let derivative = math.derivative(fxInput, 'x').compile();
+<h1>Newton-Raphson Method Calculator</h1>
 
-    let table = document.getElementById("table");
-    table.innerHTML = `
-        <tr>
-        <th>Iteration</th>
-        <th>xₙ</th>
-        <th>f(xₙ)</th>
-        <th>xₙ₊₁</th>
-        <th>Error</th>
-        </tr>
-    `;
+<div class="container">
 
-    let xn = x0;
-    for (let i = 1; i <= maxIter; i++) {
-        let fxn = f.evaluate({x: xn});
-        let dfxn = derivative.evaluate({x: xn});
+<label>Function f(x)</label>
+<input type="text" id="fx" placeholder="Example: x*x*x - x - 1">
 
-        if (dfxn === 0) {
-            document.getElementById("result").innerText = "Derivative is zero. Method fails.";
-            return;
-        }
+<label>Derivative f'(x)</label>
+<input type="text" id="dfx" placeholder="Example: 3*x*x - 1">
 
-        let xn1 = xn - fxn / dfxn;
-        let error = Math.abs(xn1 - xn);
+<label>Initial Guess (x0)</label>
+<input type="number" id="x0">
 
-        let row = table.insertRow();
-        row.insertCell(0).innerText = i;
-        row.insertCell(1).innerText = xn.toFixed(6);
-        row.insertCell(2).innerText = fxn.toFixed(6);
-        row.insertCell(3).innerText = xn1.toFixed(6);
-        row.insertCell(4).innerText = error.toFixed(6);
+<label>Max Iterations</label>
+<input type="number" id="iter" value="10">
 
-        if (error < tol) {
-            document.getElementById("result").innerText = `Root found: ${xn1.toFixed(6)}`;
-            return;
-        }
+<label>Tolerance</label>
+<input type="number" id="tol" value="0.0001" step="0.0001">
 
-        xn = xn1;
-    }
+<button onclick="calculate()">Calculate Root</button>
+<button onclick="reset()">Reset</button>
 
-    document.getElementById("result").innerText = `Approximate root after ${maxIter} iterations: ${xn.toFixed(6)}`;
-}
+<h2 id="result"></h2>
 
-function reset() {
-    document.getElementById("fx").value = "";
-    document.getElementById("x0").value = "";
-    document.getElementById("iter").value = 10;
-    document.getElementById("tol").value = 0.0001;
-    document.getElementById("result").innerText = "";
-    document.getElementById("table").innerHTML = `
-        <tr>
-        <th>Iteration</th>
-        <th>xₙ</th>
-        <th>f(xₙ)</th>
-        <th>xₙ₊₁</th>
-        <th>Error</th>
-        </tr>
-    `;
-}
+<table id="table">
+<tr>
+<th>Iteration</th>
+<th>xₙ</th>
+<th>f(xₙ)</th>
+<th>xₙ₊₁</th>
+<th>Error</th>
+</tr>
+</table>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
+<h1>Newton-Raphson Calculator</h1>
+
+<button onclick="toggleTheme()">Toggle Theme</button>
+<button onclick="loadExample()">Load Example</button>
+
+<div class="progress">
+<div id="progressBar"></div>
+</div>
+
+<canvas id="graph" width="400" height="200"></canvas>
+
+<button onclick="downloadCSV()">Download Results</button>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
