@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Newton-Raphson Calculator</title>
-    <link rel="stylesheet" href="style.css">
+<title>Newton Raphson Calculator</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/mathjs@11/lib/browser/math.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body>
 
-<h1>Newton-Raphson Method Calculator</h1>
+<h1>Newton–Raphson Root Finder</h1>
 
 <div class="container">
 
 <label>Function f(x)</label>
-<input type="text" id="fx" placeholder="Example: x*x*x - x - 1">
+<input id="fx" placeholder="Example: x^3 - x - 1">
 
-<label>Derivative f'(x)</label>
-<input type="text" id="dfx" placeholder="Example: 3*x*x - 1">
-
-<label>Initial Guess (x0)</label>
+<label>Initial Guess (x₀)</label>
 <input type="number" id="x0">
 
 <label>Max Iterations</label>
-<input type="number" id="iter" value="10">
+<input type="number" id="iter" value="15">
 
 <label>Tolerance</label>
 <input type="number" id="tol" value="0.0001" step="0.0001">
@@ -29,9 +32,20 @@
 <button onclick="calculate()">Calculate Root</button>
 <button onclick="reset()">Reset</button>
 
+<br><br>
+
+<button onclick="toggleTheme()">Toggle Theme</button>
+<button onclick="loadExample()">Load Example</button>
+<button onclick="downloadCSV()">Download CSV</button>
+
 <h2 id="result"></h2>
 
+<div class="progress">
+<div id="progressBar"></div>
+</div>
+
 <table id="table">
+
 <tr>
 <th>Iteration</th>
 <th>xₙ</th>
@@ -39,7 +53,10 @@
 <th>xₙ₊₁</th>
 <th>Error</th>
 </tr>
+
 </table>
+
+<canvas id="graph"></canvas>
 
 </div>
 
