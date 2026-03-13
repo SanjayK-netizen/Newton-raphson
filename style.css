@@ -1,29 +1,39 @@
 body{
+
 font-family:Arial;
-background:#0b0b0b;
+
+background:radial-gradient(circle at top,#2b0000,#000000);
+
 color:white;
 
 display:flex;
+
 flex-direction:column;
+
 justify-content:center;
+
 align-items:center;
 
 min-height:100vh;
-margin:0;
-}
 
-/* Title */
+margin:0;
+
+}
 
 h1{
+
 color:#DC0000;
+
 margin-bottom:20px;
-letter-spacing:1px;
+
 }
 
-/* Main container */
-
 .container{
-width:450px;
+
+width:90%;
+
+max-width:450px;
+
 background:#181818;
 
 padding:25px;
@@ -33,14 +43,17 @@ border-radius:12px;
 border:3px solid #DC0000;
 
 box-shadow:
+
 0 0 12px #DC0000,
+
 0 0 30px rgba(220,0,0,0.7);
+
 }
 
-/* Inputs */
-
 input{
+
 width:92%;
+
 padding:10px;
 
 margin:8px 0;
@@ -50,12 +63,13 @@ border-radius:6px;
 border:1px solid #DC0000;
 
 background:#111;
+
 color:white;
+
 }
 
-/* Buttons */
-
 button{
+
 padding:10px 14px;
 
 margin:6px;
@@ -73,6 +87,7 @@ font-weight:bold;
 cursor:pointer;
 
 transition:0.3s;
+
 }
 
 button:hover{
@@ -82,8 +97,6 @@ background:#a30000;
 transform:scale(1.05);
 
 }
-
-/* Table */
 
 table{
 
@@ -115,8 +128,6 @@ padding:6px;
 
 }
 
-/* Progress bar */
-
 .progress{
 
 width:100%;
@@ -143,8 +154,6 @@ border-radius:5px;
 
 }
 
-/* Graph */
-
 canvas{
 
 margin-top:20px;
@@ -152,5 +161,13 @@ margin-top:20px;
 background:white;
 
 border-radius:6px;
+
+}
+
+.light-mode{
+
+background:white;
+
+color:black;
 
 }
