@@ -1,84 +1,154 @@
-body{
-font-family:Arial;
-background:#111;
-color:white;
-text-align:center;
+let chart
+let iterationData=[]
+
+function calculate(){
+
+try{
+
+let fx=document.getElementById("fx").value
+let x=parseFloat(document.getElementById("x0").value)
+let maxIter=parseInt(document.getElementById("iter").value)
+let tol=parseFloat(document.getElementById("tol").value)
+
+if(!fx || isNaN(x)){
+alert("Please enter function and initial guess")
+return
 }
 
-h1{
-color:#D40000;
+let derivative=math.derivative(fx,'x').toString()
+
+let table=document.getElementById("table")
+
+/* clear old rows */
+table.innerHTML = `
+<tr>
+<th>Iteration</th>
+<th>xₙ</th>
+<th>f(xₙ)</th>
+<th>xₙ₊₁</th>
+<th>Error</th>
+</tr>
+`
+
+iterationData=[]
+
+for(let i=1;i<=maxIter;i++){
+
+let f=math.evaluate(fx,{x:x})
+let df=math.evaluate(derivative,{x:x})
+
+if(df===0){
+alert("Derivative became zero. Method stopped.")
+return
 }
 
-.container{
-width:450px;
-margin:auto;
-background:#1b1b1b;
-padding:20px;
-border-radius:10px;
-border:2px solid #D40000;
-box-shadow:0 0 15px #D40000;
+let x1=x-(f/df)
+let error=Math.abs(x1-x)
+
+/* add row */
+let row=table.insertRow()
+
+row.insertCell(0).innerText=i
+row.insertCell(1).innerText=x.toFixed(6)
+row.insertCell(2).innerText=f.toFixed(6)
+row.insertCell(3).innerText=x1.toFixed(6)
+row.insertCell(4).innerText=error.toFixed(6)
+
+iterationData.push({iteration:i,x:x})
+
+/* progress bar */
+document.getElementById("progressBar").style.width=
+(i/maxIter*100)+"%"
+
+if(error<tol){
+
+document.getElementById("result").innerHTML=
+"Root ≈ "+x1.toFixed(6)
+
+drawGraph(fx,x1)
+
+return
 }
 
-input{
-width:90%;
-padding:8px;
-margin:6px;
-border:1px solid #D40000;
-border-radius:5px;
+x=x1
 }
 
-button{
-padding:10px;
-margin:5px;
-cursor:pointer;
-background:#D40000;
-color:white;
-border:none;
-border-radius:5px;
-font-weight:bold;
+drawGraph(fx,x)
+
+}catch(err){
+
+alert("Error in function. Please check your equation format.\nExample: x^3-x-1")
+
+console.error(err)
+
 }
 
-button:hover{
-background:#a30000;
 }
 
-table{
-width:100%;
-margin-top:20px;
-border-collapse:collapse;
-background:white;
-color:black;
+function drawGraph(fx,root){
+
+let xs=[]
+let ys=[]
+
+for(let i=-10;i<=10;i+=0.5){
+
+xs.push(i)
+
+ys.push(math.evaluate(fx,{x:i}))
+
 }
 
-th{
-background:#D40000;
-color:white;
+let ctx=document.getElementById("graph")
+
+if(chart) chart.destroy()
+
+chart=new Chart(ctx,{
+
+type:'line',
+
+data:{
+labels:xs,
+datasets:[
+{
+label:'f(x)',
+data:ys,
+borderWidth:2
+}
+]
 }
 
-th,td{
-border:1px solid gray;
-padding:6px;
+})
+
 }
 
-.progress{
-width:100%;
-height:10px;
-background:#444;
-margin-top:10px;
+function toggleTheme(){
+document.body.classList.toggle("light-mode")
 }
 
-#progressBar{
-height:10px;
-width:0%;
-background:#D40000;
+function loadExample(){
+
+document.getElementById("fx").value="x^3-x-1"
+document.getElementById("x0").value="1"
+
 }
 
-.light-mode{
-background:white;
-color:black;
+function downloadCSV(){
+
+let csv="Iteration,x\n"
+
+iterationData.forEach(d=>{
+csv+=d.iteration+","+d.x+"\n"
+})
+
+let blob=new Blob([csv],{type:'text/csv'})
+let a=document.createElement("a")
+a.href=URL.createObjectURL(blob)
+a.download="iterations.csv"
+a.click()
+
 }
 
-canvas{
-margin-top:20px;
-background:white;
+function reset(){
+location.reload()
 }
+
