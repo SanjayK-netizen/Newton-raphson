@@ -3,15 +3,13 @@ let iterationData=[]
 
 function calculate(){
 
-try{
-
 let fx=document.getElementById("fx").value
 let x=parseFloat(document.getElementById("x0").value)
 let maxIter=parseInt(document.getElementById("iter").value)
 let tol=parseFloat(document.getElementById("tol").value)
 
 if(!fx || isNaN(x)){
-alert("Please enter function and initial guess")
+alert("Enter function and initial guess")
 return
 }
 
@@ -19,8 +17,7 @@ let derivative=math.derivative(fx,'x').toString()
 
 let table=document.getElementById("table")
 
-/* clear old rows */
-table.innerHTML = `
+table.innerHTML=`
 <tr>
 <th>Iteration</th>
 <th>xₙ</th>
@@ -38,14 +35,14 @@ let f=math.evaluate(fx,{x:x})
 let df=math.evaluate(derivative,{x:x})
 
 if(df===0){
-alert("Derivative became zero. Method stopped.")
+alert("Derivative became zero")
 return
 }
 
 let x1=x-(f/df)
+
 let error=Math.abs(x1-x)
 
-/* add row */
 let row=table.insertRow()
 
 row.insertCell(0).innerText=i
@@ -56,7 +53,6 @@ row.insertCell(4).innerText=error.toFixed(6)
 
 iterationData.push({iteration:i,x:x})
 
-/* progress bar */
 document.getElementById("progressBar").style.width=
 (i/maxIter*100)+"%"
 
@@ -75,14 +71,6 @@ x=x1
 
 drawGraph(fx,x)
 
-}catch(err){
-
-alert("Error in function. Please check your equation format.\nExample: x^3-x-1")
-
-console.error(err)
-
-}
-
 }
 
 function drawGraph(fx,root){
@@ -94,7 +82,11 @@ for(let i=-10;i<=10;i+=0.5){
 
 xs.push(i)
 
-ys.push(math.evaluate(fx,{x:i}))
+let y=math.evaluate(fx,{x:i})
+
+if(!isFinite(y)) y=null
+
+ys.push(y)
 
 }
 
@@ -108,6 +100,7 @@ type:'line',
 
 data:{
 labels:xs,
+
 datasets:[
 {
 label:'f(x)',
@@ -115,6 +108,7 @@ data:ys,
 borderWidth:2
 }
 ]
+
 }
 
 })
@@ -141,9 +135,13 @@ csv+=d.iteration+","+d.x+"\n"
 })
 
 let blob=new Blob([csv],{type:'text/csv'})
+
 let a=document.createElement("a")
+
 a.href=URL.createObjectURL(blob)
+
 a.download="iterations.csv"
+
 a.click()
 
 }
@@ -151,4 +149,3 @@ a.click()
 function reset(){
 location.reload()
 }
-
