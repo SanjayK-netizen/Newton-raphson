@@ -1,49 +1,70 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Newton-Raphson Calculator</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+function calculate() {
+    let fxInput = document.getElementById("fx").value;
+    let x0 = parseFloat(document.getElementById("x0").value);
+    let maxIter = parseInt(document.getElementById("iter").value);
+    let tol = parseFloat(document.getElementById("tol").value);
 
-<body>
+    // Parse function using math.js
+    let f = math.parse(fxInput).compile();
 
-<h1>Newton-Raphson Method Calculator</h1>
+    // Compute derivative automatically
+    let derivative = math.derivative(fxInput, 'x').compile();
 
-<div class="container">
+    let table = document.getElementById("table");
+    table.innerHTML = `
+        <tr>
+        <th>Iteration</th>
+        <th>xₙ</th>
+        <th>f(xₙ)</th>
+        <th>xₙ₊₁</th>
+        <th>Error</th>
+        </tr>
+    `;
 
-<label>Function f(x)</label>
-<input type="text" id="fx" placeholder="Example: x*x*x - x - 1">
+    let xn = x0;
+    for (let i = 1; i <= maxIter; i++) {
+        let fxn = f.evaluate({x: xn});
+        let dfxn = derivative.evaluate({x: xn});
 
-<label>Derivative f'(x)</label>
-<input type="text" id="dfx" placeholder="Example: 3*x*x - 1">
+        if (dfxn === 0) {
+            document.getElementById("result").innerText = "Derivative is zero. Method fails.";
+            return;
+        }
 
-<label>Initial Guess (x0)</label>
-<input type="number" id="x0">
+        let xn1 = xn - fxn / dfxn;
+        let error = Math.abs(xn1 - xn);
 
-<label>Max Iterations</label>
-<input type="number" id="iter" value="10">
+        let row = table.insertRow();
+        row.insertCell(0).innerText = i;
+        row.insertCell(1).innerText = xn.toFixed(6);
+        row.insertCell(2).innerText = fxn.toFixed(6);
+        row.insertCell(3).innerText = xn1.toFixed(6);
+        row.insertCell(4).innerText = error.toFixed(6);
 
-<label>Tolerance</label>
-<input type="number" id="tol" value="0.0001" step="0.0001">
+        if (error < tol) {
+            document.getElementById("result").innerText = `Root found: ${xn1.toFixed(6)}`;
+            return;
+        }
 
-<button onclick="calculate()">Calculate Root</button>
-<button onclick="reset()">Reset</button>
+        xn = xn1;
+    }
 
-<h2 id="result"></h2>
+    document.getElementById("result").innerText = `Approximate root after ${maxIter} iterations: ${xn.toFixed(6)}`;
+}
 
-<table id="table">
-<tr>
-<th>Iteration</th>
-<th>xₙ</th>
-<th>f(xₙ)</th>
-<th>xₙ₊₁</th>
-<th>Error</th>
-</tr>
-</table>
-
-</div>
-
-<script src="script.js"></script>
-
-</body>
-</html>
+function reset() {
+    document.getElementById("fx").value = "";
+    document.getElementById("x0").value = "";
+    document.getElementById("iter").value = 10;
+    document.getElementById("tol").value = 0.0001;
+    document.getElementById("result").innerText = "";
+    document.getElementById("table").innerHTML = `
+        <tr>
+        <th>Iteration</th>
+        <th>xₙ</th>
+        <th>f(xₙ)</th>
+        <th>xₙ₊₁</th>
+        <th>Error</th>
+        </tr>
+    `;
+}
