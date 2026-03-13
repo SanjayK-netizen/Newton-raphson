@@ -5,6 +5,8 @@
 
 <title>Newton Raphson Calculator</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <link rel="stylesheet" href="style.css">
 
 <script src="https://cdn.jsdelivr.net/npm/mathjs@11/lib/browser/math.js"></script>
@@ -20,8 +22,9 @@
 
 <label>Function f(x)</label>
 <input id="fx" placeholder="Example: x^3 - x - 1">
+
 <p id="derivativeDisplay"></p>
-  
+
 <label>Initial Guess (x₀)</label>
 <input type="number" id="x0">
 
@@ -60,10 +63,13 @@
 
 <canvas id="graph"></canvas>
 
+<h3>Root Convergence</h3>
+
+<canvas id="convergenceGraph"></canvas>
+
 </div>
 
 <script src="script.js"></script>
 
 </body>
 </html>
-
