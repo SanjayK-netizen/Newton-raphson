@@ -1,19 +1,19 @@
-Newton-Raphson Web Calculator
+# Newton–Raphson Web Calculator
 
-This web application calculates the root of nonlinear equations using the Newton-Raphson Method.
+A web calculator that finds roots of nonlinear equations using the Newton–Raphson method.
 
-Inputs:
-- Function f(x)
-- Derivative f'(x)
-- Initial guess
-- Iteration limit
-- Tolerance
-
-Output:
-- Root of equation
+Features
+- Automatic derivative calculation
 - Iteration table
+- Function graph
+- Root convergence graph
+- CSV export
+- Ferrari Rosso Corsa UI
+- Mobile responsive design
 
-Technologies Used:
+Technologies
 HTML
 CSS
 JavaScript
+Math.js
+Chart.js
