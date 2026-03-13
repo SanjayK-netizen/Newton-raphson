@@ -7,7 +7,11 @@ let fx=document.getElementById("fx").value
 let x=parseFloat(document.getElementById("x0").value)
 let maxIter=parseInt(document.getElementById("iter").value)
 let tol=parseFloat(document.getElementById("tol").value)
+let derivative = math.derivative(fx,'x').toString()
 
+document.getElementById("derivativeDisplay").innerHTML =
+"Derivative: f'(x) = " + derivative
+  
 if(!fx || isNaN(x)){
 alert("Enter function and initial guess")
 return
@@ -149,3 +153,4 @@ a.click()
 function reset(){
 location.reload()
 }
+
