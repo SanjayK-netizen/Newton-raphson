@@ -1,46 +1,84 @@
-function calculate(){
-
-let fx = document.getElementById("fx").value
-let dfx = document.getElementById("dfx").value
-let x = parseFloat(document.getElementById("x0").value)
-let maxIter = parseInt(document.getElementById("iter").value)
-let tol = parseFloat(document.getElementById("tol").value)
-
-let table = document.getElementById("table")
-
-for(let i=1;i<=maxIter;i++){
-
-let f = eval(fx)
-let df = eval(dfx)
-
-if(df==0){
-alert("Derivative became zero")
-return
+body{
+font-family:Arial;
+background:#111;
+color:white;
+text-align:center;
 }
 
-let x1 = x - (f/df)
-
-let error = Math.abs(x1-x)
-
-let row = table.insertRow()
-row.insertCell(0).innerHTML = i
-row.insertCell(1).innerHTML = x.toFixed(6)
-row.insertCell(2).innerHTML = f.toFixed(6)
-row.insertCell(3).innerHTML = x1.toFixed(6)
-row.insertCell(4).innerHTML = error.toFixed(6)
-
-if(error < tol){
-document.getElementById("result").innerHTML = "Root = " + x1
-return
+h1{
+color:#D40000;
 }
 
-x = x1
-
+.container{
+width:450px;
+margin:auto;
+background:#1b1b1b;
+padding:20px;
+border-radius:10px;
+border:2px solid #D40000;
+box-shadow:0 0 15px #D40000;
 }
 
-document.getElementById("result").innerHTML="Approximate Root = "+x
+input{
+width:90%;
+padding:8px;
+margin:6px;
+border:1px solid #D40000;
+border-radius:5px;
 }
 
-function reset(){
-location.reload()
+button{
+padding:10px;
+margin:5px;
+cursor:pointer;
+background:#D40000;
+color:white;
+border:none;
+border-radius:5px;
+font-weight:bold;
+}
+
+button:hover{
+background:#a30000;
+}
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+background:white;
+color:black;
+}
+
+th{
+background:#D40000;
+color:white;
+}
+
+th,td{
+border:1px solid gray;
+padding:6px;
+}
+
+.progress{
+width:100%;
+height:10px;
+background:#444;
+margin-top:10px;
+}
+
+#progressBar{
+height:10px;
+width:0%;
+background:#D40000;
+}
+
+.light-mode{
+background:white;
+color:black;
+}
+
+canvas{
+margin-top:20px;
+background:white;
 }
