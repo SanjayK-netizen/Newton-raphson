@@ -1,4 +1,5 @@
 let chart
+let convergenceChart
 let iterationData=[]
 
 function calculate(){
@@ -7,17 +8,16 @@ let fx=document.getElementById("fx").value
 let x=parseFloat(document.getElementById("x0").value)
 let maxIter=parseInt(document.getElementById("iter").value)
 let tol=parseFloat(document.getElementById("tol").value)
-let derivative = math.derivative(fx,'x').toString()
 
-document.getElementById("derivativeDisplay").innerHTML =
-"Derivative: f'(x) = " + derivative
-  
 if(!fx || isNaN(x)){
 alert("Enter function and initial guess")
 return
 }
 
 let derivative=math.derivative(fx,'x').toString()
+
+document.getElementById("derivativeDisplay").innerHTML=
+"Derivative: f'(x) = "+derivative
 
 let table=document.getElementById("table")
 
@@ -65,7 +65,9 @@ if(error<tol){
 document.getElementById("result").innerHTML=
 "Root ≈ "+x1.toFixed(6)
 
-drawGraph(fx,x1)
+drawGraph(fx)
+
+drawConvergence()
 
 return
 }
@@ -73,11 +75,13 @@ return
 x=x1
 }
 
-drawGraph(fx,x)
+drawGraph(fx)
+
+drawConvergence()
 
 }
 
-function drawGraph(fx,root){
+function drawGraph(fx){
 
 let xs=[]
 let ys=[]
@@ -119,8 +123,40 @@ borderWidth:2
 
 }
 
+function drawConvergence(){
+
+let iterations=iterationData.map(d=>d.iteration)
+let values=iterationData.map(d=>d.x)
+
+let ctx=document.getElementById("convergenceGraph")
+
+if(convergenceChart) convergenceChart.destroy()
+
+convergenceChart=new Chart(ctx,{
+
+type:'line',
+
+data:{
+labels:iterations,
+
+datasets:[
+{
+label:"Root Convergence",
+data:values,
+borderWidth:2
+}
+]
+
+}
+
+})
+
+}
+
 function toggleTheme(){
+
 document.body.classList.toggle("light-mode")
+
 }
 
 function loadExample(){
@@ -151,6 +187,7 @@ a.click()
 }
 
 function reset(){
-location.reload()
-}
 
+location.reload()
+
+}
